@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('emoji',1);
             $table->timestamps();
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('post_id')->constrained('posts')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('post_id')->constrained('posts')->cascadeOnDelete();
             $table->unique(["user_id", "post_id"], 'user_reaction_unique');
         });
     }
