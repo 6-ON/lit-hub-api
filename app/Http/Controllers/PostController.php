@@ -18,7 +18,7 @@ class PostController extends Controller
     public function index()
     {
         \request([]);
-        return Post::filter()->get();
+        return Post::latest()->get();
     }
 
     /**
@@ -58,21 +58,20 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Post $post): Response
+    public function update(Request $request, Post $post)
     {
         $isValid=  $request->validate([
-            'title'=>'required|max:50',
-            'description'=>'required|max:500',
-            'category_id'=>'required',
-            'image'=>'required|url',
-            'attachment'=>'required|url',
+            'title'=>'sometimes|max:50',
+            'description'=>'sometimes|max:500',
+            'image'=>'sometimes|url',
+            'attachment'=>'sometimes|url',
         ]);
         if($isValid){
             $post->fill($request->all());
             $post->save();
             return $post;
         }
-        return \response();
+        return \response()->noContent();
     }
 
     /**
