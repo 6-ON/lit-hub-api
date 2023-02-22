@@ -34,7 +34,7 @@ class PostController extends Controller
             'attachment'=>'required|url',
         ]);
         if($isValid){
-            $post = Post::create([
+            return Post::create([
                 'title'=>$request->title,
                 'user_id'=> $request->user()->id,
                 'description'=>$request->description,
@@ -42,7 +42,6 @@ class PostController extends Controller
                 'image'=>$request->image,
                 'attachment'=>$request->attachment,
             ]);
-            return $post;
         }
 
     }
