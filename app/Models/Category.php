@@ -10,8 +10,9 @@ class Category extends Model
 {
     use HasFactory,Sluggable;
 
+    protected $fillable = ['label'];
     public function sluggable(): array
     {
-        return ['slug' => ['source' => 'title']];
+        return ['slug' => ['source' => 'label']];
     }
 }
