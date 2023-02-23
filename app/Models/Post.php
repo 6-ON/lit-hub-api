@@ -11,21 +11,26 @@ class Post extends Model
     use HasFactory, Sluggable;
 
     protected $guarded =['id'];
-    protected $with = ['user:id,username', 'category:id,label,slug'];
+    protected $with = ['owner:id,username,image', 'category:id,label,slug'];
 
     public function scopeFilter($filters)
     {
 
     }
 
-    public function user()
+    public function owner()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class,'user_id');
     }
 
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
     }
 
     public function sluggable(): array
