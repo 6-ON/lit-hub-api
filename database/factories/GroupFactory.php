@@ -19,7 +19,7 @@ class GroupFactory extends Factory
     {
         $slug = fake()->unique()->slug();
         return [
-            'label'=>fake()->name,
+            'title'=>fake()->name,
             'slug'=>$slug,
             'image'=>fake()->imageUrl(word: $slug),
             'description'=>fake()->text,
