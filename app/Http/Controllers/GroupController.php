@@ -12,56 +12,68 @@ class GroupController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): Response
+    public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create(): Response
-    {
-        //
+        return Group::latest()->get()->load('owner:id,username')->loadCount('members');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request)
     {
-        //
+        $isValid = $request->validate([
+            'title' => ['required', 'string', 'max:50'],
+            'description' => ['required', 'string', 'max:500'],
+            'image' => ['required', 'url'],
+        ]);
+
+        if ($isValid) {
+            return Group::create([
+                'title' => $request->title,
+                'description' => $request->description,
+                'image' => $request->image,
+                'user_id' => \request()->user()->id
+            ]);
+        }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Group $group): Response
+    public function show(Group $group)
     {
-        //
+        return $group->load(['members:id,username', 'owner:id,username,image','messages'])->loadCount('members');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Group $group): Response
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Group $group): RedirectResponse
+    public function update(Request $request, Group $group)
     {
-        //
+        abort_if($group->owner()->isNot(\request()->user()), 403);
+        $isValid = $request->validate([
+            'title' => ['sometimes', 'string', 'max:50'],
+            'description' => ['sometimes', 'string', 'max:500'],
+            'image' => ['sometimes', 'url'],
+        ]);
+
+        if ($isValid) {
+            $group->fill($request->all());
+            $group->save();
+            return $group;
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Group $group): RedirectResponse
+    public function destroy(Group $group)
     {
-        //
+        abort_if($group->owner()->isNot(\request()->user()), 403);
+        $group->delete();
+        return \response()->noContent();
+
     }
 }
