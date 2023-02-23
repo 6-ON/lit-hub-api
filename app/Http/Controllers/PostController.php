@@ -26,21 +26,21 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        $isValid=  $request->validate([
-            'title'=>'required|max:50',
-            'description'=>'required|max:500',
-            'category_id'=>'required',
-            'image'=>'required|url',
-            'attachment'=>'required|url',
+        $isValid = $request->validate([
+            'title' => 'required|max:50',
+            'description' => 'required|max:500',
+            'category_id' => 'required|exists:categories,id',
+            'image' => 'required|url',
+            'attachment' => 'required|url',
         ]);
-        if($isValid){
+        if ($isValid) {
             return Post::create([
-                'title'=>$request->title,
-                'user_id'=> $request->user()->id,
-                'description'=>$request->description,
-                'category_id'=>$request->category_id,
-                'image'=>$request->image,
-                'attachment'=>$request->attachment,
+                'title' => $request->title,
+                'user_id' => $request->user()->id,
+                'description' => $request->description,
+                'category_id' => $request->category_id,
+                'image' => $request->image,
+                'attachment' => $request->attachment,
             ]);
         }
 
@@ -51,7 +51,7 @@ class PostController extends Controller
      */
     public function show(Post $post): JsonResponse
     {
-        return \response()->json($post);
+        return \response()->json($post->load('comments.user:id,username,image'));
     }
 
     /**
@@ -59,13 +59,16 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        $isValid=  $request->validate([
-            'title'=>'sometimes|max:50',
-            'description'=>'sometimes|max:500',
-            'image'=>'sometimes|url',
-            'attachment'=>'sometimes|url',
+        abort_if($post->owner()->isNot(\request()->user()),403);
+
+        $isValid = $request->validate([
+            'title' => 'sometimes|max:50',
+            'description' => 'sometimes|max:500',
+            'image' => 'sometimes|url',
+            'attachment' => 'sometimes|url',
+            'category_id' => 'sometimes|integer|exists:categories,id',
         ]);
-        if($isValid){
+        if ($isValid) {
             $post->fill($request->all());
             $post->save();
             return $post;
@@ -78,7 +81,9 @@ class PostController extends Controller
      */
     public function destroy(Post $post): Response
     {
+        abort_if($post->owner()->isNot(\request()->user()),403);
         $post->delete();
         return \response()->noContent();
+
     }
 }
