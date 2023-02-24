@@ -51,7 +51,7 @@ class PostController extends Controller
      */
     public function show(Post $post): JsonResponse
     {
-        return \response()->json($post->load('comments.user:id,username,image'));
+        return \response()->json($post->load(['comments.owner:id,username,image','reactions']));
     }
 
     /**
