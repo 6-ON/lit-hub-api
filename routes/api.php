@@ -7,6 +7,7 @@ use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReactionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -55,6 +56,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/message', [MessageController::class, 'store'])->name('message.add'); //add message
     Route::patch('/message/{comment}', [MessageController::class, 'update'])->name('message.update'); //update message
     Route::delete('/message/{comment}', [MessageController::class, 'destroy'])->name('message.delete'); //delete message
+
+    Route::post('post/{post}/react', [ReactionController::class, 'store'])->name('post.react'); //add react
+    Route::delete('/post/{post}/react', [ReactionController::class, 'destroy'])->name('post.delete'); //delete react
 
 });
 
