@@ -12,7 +12,7 @@ class Post extends Model
 
     protected $guarded =['id'];
     protected $with = ['owner:id,username,image', 'category:id,label,slug'];
-
+    protected $withCount = ['reactions'];
     public function scopeFilter($filters)
     {
 
@@ -31,6 +31,11 @@ class Post extends Model
     public function comments()
     {
         return $this->hasMany(Comment::class);
+    }
+
+    public function reactions()
+    {
+        return $this->hasMany(Reaction::class);
     }
 
     public function sluggable(): array
