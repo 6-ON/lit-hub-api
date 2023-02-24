@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use App\Models\Reaction;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -9,59 +10,41 @@ use Illuminate\Http\Response;
 
 class ReactionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index(): Response
-    {
-        //
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create(): Response
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Post $post, Request $request)
     {
-        //
+        $reacted = $post->reactions()->where(['reactions.user_id' => $request->user()->id])->exists();
+
+        if ($reacted) {
+            return \response()->json(['message' => 'already reacted !'], 422);
+        }
+        $request->validate([
+            'emoji'=> 'required|string|max:1'
+        ]);
+        $reaction = new  Reaction();
+        $reaction->fill([
+            'post_id' => $post->id,
+            'emoji' => $request->emoji,
+            'user_id' => $request->user()->id,
+        ]);
+        $reaction->save();
+        return \response(status: 201);
+
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Reaction $reaction): Response
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Reaction $reaction): Response
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Reaction $reaction): RedirectResponse
-    {
-        //
-    }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Reaction $reaction): RedirectResponse
+    public function destroy(Post $post)
     {
-        //
+        $reacted = $post->reactions()->where('reactions.user_id',\request()->user()->id)->first() ?? false;
+        abort_if(!$reacted, 422);
+        $reacted->delete();
+        return \response()->noContent();
     }
 }
