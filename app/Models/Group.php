@@ -28,6 +28,11 @@ class Group extends Model
         return $this->belongsToMany(User::class, Membership::class);
     }
 
+    public function memberships()
+    {
+        return $this->hasMany(Membership::class);
+    }
+
     public function messages()
     {
         return $this->hasMany(Message::class);
