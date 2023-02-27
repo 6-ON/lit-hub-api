@@ -12,7 +12,7 @@ class Post extends Model
 
     protected $guarded =['id'];
     protected $with = ['owner:id,username,image', 'category:id,label,slug'];
-    protected $withCount = ['reactions'];
+    protected $withCount = ['reactions','comments'];
     public function scopeFilter($filters)
     {
 
