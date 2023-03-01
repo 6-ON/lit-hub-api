@@ -21,7 +21,7 @@ class UserFactory extends Factory
         return [
             'username' => $username,
             'email' => fake()->unique()->safeEmail(),
-            'image' => fake()->imageUrl(word: $username),
+            'image' => sprintf('https://randomuser.me/api/portraits/men/%u.jpg',fake()->numberBetween(0,99)),
             'email_verified_at' => now(),
             'password' => bcrypt('password'),
             'remember_token' => Str::random(10),
