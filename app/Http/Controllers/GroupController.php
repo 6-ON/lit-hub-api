@@ -43,7 +43,7 @@ class GroupController extends Controller
      */
     public function show(Group $group)
     {
-        return $group->load(['members:id,username', 'owner:id,username,image','messages'])->loadCount('members');
+        return $group->load(['members:id,username,image', 'owner:id,username,image','messages'])->loadCount('members');
     }
 
 

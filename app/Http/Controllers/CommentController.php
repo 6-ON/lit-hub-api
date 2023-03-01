@@ -16,7 +16,7 @@ class CommentController extends Controller
     {
         $isValid = $request->validate([
             'content' => ['required', 'string', 'max:500'],
-            'post_id' => ['required', 'digit', 'exists:posts,id'],
+            'post_id' => ['required', 'integer', 'exists:posts,id'],
         ]);
 
         if ($isValid) {
@@ -25,7 +25,7 @@ class CommentController extends Controller
                 'content' => $request->content,
                 'post_id' => $request->post_id,
                 'user_id' => $request->user()->id,
-            ]);
+            ])->load('owner:id,username,image');
         }
     }
 
