@@ -39,7 +39,7 @@ class MessageController extends Controller
                 'content' => $request->content,
                 'group_id' => $request->group_id,
                 'user_id' => $request->user()->id,
-            ]);
+            ])->load('user:id,username,image');
         }
     }
 
