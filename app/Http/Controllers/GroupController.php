@@ -41,8 +41,10 @@ class GroupController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Group $group)
+    public function show(Group $group,Request $request)
     {
+        $joined = $group->memberships()->where('memberships.user_id',$request->user()->id)->exists();
+        abort_if(!$joined,403,'You cant access to the group');
         return $group->load(['members:id,username,image', 'owner:id,username,image','messages'])->loadCount('members');
     }
 
