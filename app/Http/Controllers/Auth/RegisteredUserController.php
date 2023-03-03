@@ -23,14 +23,14 @@ class RegisteredUserController extends Controller
         $request->validate([
             'username' => ['required', 'string', 'max:50'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
-            'image' => ['required', 'url'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            // 'image' => ['required', 'url'],
+            'password' => ['required', Rules\Password::defaults()],
         ]);
 
         $user = User::create([
             'username' => $request->username,
             'email' => $request->email,
-            'image' => $request->image,
+            'image' => fake()->imageUrl(word:$request->username),
             'password' => Hash::make($request->password),
         ]);
 
