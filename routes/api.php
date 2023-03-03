@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CloudinaryController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\MembershipController;
@@ -27,6 +28,9 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 });
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/cloudinary/signature', [CloudinaryController::class, 'generateSignature'])->name('cloudinary.signature'); //get Signature
+    
+
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
