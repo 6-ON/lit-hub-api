@@ -34,7 +34,7 @@ class MembershipController extends Controller
             'user_id' => $request->user()->id,
         ]);
         $membership->save();
-        return \response()->noContent();
+        return $membership;
 
     }
 
