@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Group;
+use App\Models\Membership;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -29,12 +30,17 @@ class GroupController extends Controller
         ]);
 
         if ($isValid) {
-            return Group::create([
+            $group = Group::create([
                 'title' => $request->title,
                 'description' => $request->description,
                 'image' => $request->image,
-                'user_id' => \request()->user()->id
+                'user_id' => $request->user()->id
             ]);
+            $membership = new Membership([
+                'user_id' => $request->user()->id
+            ]);
+            $group->memberships()->save($membership);
+            return $group;
         }
     }
 
