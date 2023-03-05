@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('reactions', function (Blueprint $table) {
             $table->id();
-            $table->string('emoji',1);
+            $table->string('emoji',2);
             $table->timestamps();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('post_id')->constrained('posts')->cascadeOnDelete();
