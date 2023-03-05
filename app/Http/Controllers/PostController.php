@@ -29,7 +29,7 @@ class PostController extends Controller
         $isValid = $request->validate([
             'title' => 'required|max:50',
             'description' => 'required|max:500',
-            'category_id' => 'required|exists:categories,id',
+            'category_id' => 'nullable|exists:categories,id',
             'image' => 'required|url',
             'attachment' => 'required|url',
         ]);
