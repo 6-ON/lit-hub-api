@@ -62,7 +62,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/message/{comment}', [MessageController::class, 'destroy'])->name('message.delete'); //delete message
 
     Route::post('post/{post}/react', [ReactionController::class, 'store'])->name('post.react'); //add react
-    Route::delete('/post/{post}/react', [ReactionController::class, 'destroy'])->name('post.delete'); //delete react
+    Route::patch('post/{post}/react', [ReactionController::class, 'update'])->name('post.reactUpdate'); //add react
+    Route::delete('/post/{post}/react', [ReactionController::class, 'destroy'])->name('post.deleteReact'); //delete react
 
 });
 
