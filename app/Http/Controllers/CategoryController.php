@@ -37,7 +37,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        return $category;
+        return $category->load('posts');
     }
 
     /**
