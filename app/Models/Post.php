@@ -6,13 +6,14 @@ use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Post extends Model
 {
     use HasFactory, Sluggable;
 
     protected $guarded = ['id'];
-    protected $appends = ['user_reaction'];
+    protected $appends = ['user_reaction','is_favourited'];
     protected $with = ['owner:id,username,image', 'category:id,label,slug'];
     protected $withCount = ['reactions', 'comments'];
     public function scopeFilter($filters)
@@ -55,4 +56,21 @@ class Post extends Model
             }
         );
     }
+    public function userFavourited()
+    {
+        return $this->belongsToMany(User::class,Favourite::class);
+    }
+    // append is_favourite attribute
+    public function isFavourited(): Attribute
+    {
+        return new Attribute(
+            get: function () {
+                if (auth()->check()) {
+                    return $this->userFavourited()->where('user_id',auth()->id())->exists();
+                }
+                return false;
+            }
+        );
+    }
+
 }
