@@ -10,6 +10,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReactionController;
 use App\Http\Controllers\FavouriteController;
+use App\Http\Controllers\UsersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -72,6 +73,8 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::get('/posts', [PostController::class, 'index'])->name('post.all');
+
+Route::get('/users', [UsersController::class, 'index'])->name('users.all');
 
 Route::get('/categories', [CategoryController::class, 'index'])->name('category.all');
 

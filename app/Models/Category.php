@@ -15,4 +15,8 @@ class Category extends Model
     {
         return ['slug' => ['source' => 'label']];
     }
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
 }
