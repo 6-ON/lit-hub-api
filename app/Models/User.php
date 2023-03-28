@@ -48,6 +48,10 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Group::class,Membership::class);
     }
+    public function favourites()
+    {
+        return $this->belongsToMany(Post::class,Favourite::class);
+    }
 
 
 }
