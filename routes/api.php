@@ -9,6 +9,7 @@ use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReactionController;
+use App\Http\Controllers\FavouriteController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -65,11 +66,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::patch('post/{post}/react', [ReactionController::class, 'update'])->name('post.reactUpdate'); //add react
     Route::delete('/post/{post}/react', [ReactionController::class, 'destroy'])->name('post.deleteReact'); //delete react
 
+    Route::get('favourites', [FavouriteController::class,'index'])->name('favourite.all');
+    Route::post('post/{post}/favourite', [FavouriteController::class, 'store'])->name('post.favourite'); //favourite post
+    Route::delete('post/{post}/favourite', [FavouriteController::class, 'destroy'])->name('post.deleteFavourite'); //delete favourite
 });
 
 Route::get('/posts', [PostController::class, 'index'])->name('post.all');
 
-//category routes
 Route::get('/categories', [CategoryController::class, 'index'])->name('category.all');
 
 Route::get('/groups', [GroupController::class, 'index'])->name('group.all');
