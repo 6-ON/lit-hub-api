@@ -8,7 +8,7 @@ use App\Models\Post;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Str;
+
 
 class PostController extends Controller
 {
@@ -17,7 +17,6 @@ class PostController extends Controller
      */
     public function index()
     {
-        \request([]);
         return Post::latest()->get();
     }
 
