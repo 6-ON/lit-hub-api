@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('image');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('attachment');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
